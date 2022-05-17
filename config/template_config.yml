@@ -1,0 +1,8 @@
+---
+:PrivateDir: Private
+:ServerPort: 9999
+:Database:
+  :Username: MyUser
+  :Password: TemplateYourPasswordHere
+  :Host: MyHost
+  :DatabaseName: MyDatabaseName
