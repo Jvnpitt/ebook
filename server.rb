@@ -36,6 +36,18 @@ class ESeboServer
             erb :one_book
         end
 
+        # TODO Check if is necessary
+        @@server.get '/users' do
+            @allUsers = Routes::Users.getAll(request)
+            erb :all_users
+        end
+
+        # TODO add UI
+        @@server.post '/users' do
+            Routes::Users.insert(request)
+            redirect '/success'
+        end
+
         @@server.error 400..510 do 
             erb :default_error
         end

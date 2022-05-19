@@ -4,7 +4,7 @@ class Routes
     class Books
         def self.getAll(request)
             bookList = []
-            queryResult = Database.executeQuery("SELECT * FROM Books")
+            queryResult = Database.executeQuery("select * from Books")
             queryResult.each do |row|
                 bookList << Book.new(row)
             end
@@ -12,9 +12,9 @@ class Routes
         end
 
         def self.getOne(request)
-            orderID = request.params[:bookID]
+            bookID = request.params[:bookID]
 
-            query = "select * from Books where Books.BookID = #{orderID}"
+            query = "select * from Books where Books.BookID = #{bookID}"
 
             queryResult = Database.executeQuery(query)
             oneBook = Book.new(queryResult.first)
