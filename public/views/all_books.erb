@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>ESebo</title>
+        <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/album/">
+        <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+        <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+            font-size: 3.5rem;
+            }
+        }
+        </style>
+    </head>
+    <body>
+
+    <header>
+    <main>
+        <section class="py-5 text-center container">
+            <div class="row py-lg-5">
+                <div class="col-lg-6 col-md-8 mx-auto">
+                    <h1 class="fw-light">Lista de Livros</h1>
+                    <p class="lead text-muted">Livros hu3hu3BRBR.</p>
+                    <p>
+                        <a href="/books" class="btn btn-primary my-2">Lista de Livros</a>
+                        <a href="/customers" class="btn btn-secondary my-2">Lista de Clientes</a>
+                        <a href="/insert/customers" class="btn btn-primary my-2">Inserir Cliente</a>
+                        <a href="/orders" class="btn btn-secondary my-2">Lista de Pedidos</a>
+                        <a href="/report" class="btn btn-primary my-2">Relatório de Pedidos</a>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <div class="album py-5 bg-light">
+            <div class="container">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                    <% @allBooks.each do |book| %>
+                    <div class="col">
+                    <!-- start here -->
+                        <div class="card shadow-sm">
+                            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title><%= book.BookName %></title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em"><%= book.BookName %></text></svg>
+                            <div class="card-body">
+                                <p class="card-text">Preço: R$ <%= book.UnitPrice.to_f %></p>
+                                <!-- <p class="card-text"><%= book.to_json %></p> -->
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <form action="/books/<%= book.BookID %>">
+                                            <button type="submit" class="btn btn-sm btn-outline-secondary">View</button>
+                                        </form>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary">Buy</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>

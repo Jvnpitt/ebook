@@ -36,6 +36,11 @@ class ESeboServer
             erb :one_book
         end
 
+        @@server.post '/books' do
+            @oneBook = Routes::Books.insert(request)
+            # erb :one_book
+        end
+
         # TODO Check if is necessary
         @@server.get '/users' do
             @allUsers = Routes::Users.getAll(request)

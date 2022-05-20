@@ -26,13 +26,13 @@ class Database
 
     def createBooksTable()
         # TODO: montar query
-        query = "USE ESebo; IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'Books') BEGIN CREATE TABLE Books (Id INT IDENTITY(1,1) NOT NULL PRIMARY KEY, Name NVARCHAR(50)) END"
-        @@client.execute(query)
+        query = "USE ESebo; IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'Books') BEGIN CREATE TABLE Books (BookID NVARCHAR(255),BookName NVARCHAR(255),SupplierID NVARCHAR(255),CategoryID NVARCHAR(255),QuantityPerUnit NVARCHAR(255),UnitPrice NVARCHAR(255),UnitsInStock NVARCHAR(255),UnitsOnOrder NVARCHAR(255),ReorderLevel NVARCHAR(255),Discontinued NVARCHAR(255)) END"
+        @@client.execute(query).do
     end
 
     def createUsersTable()
         # TODO: montar query
-        query = "USE ESebo; IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'Users') BEGIN CREATE TABLE Books (Id INT IDENTITY(1,1) NOT NULL PRIMARY KEY, Name NVARCHAR(50)) END"
-        @@client.execute(query)
+        query = "USE ESebo; IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'Users') BEGIN CREATE TABLE Users (Id INT IDENTITY(1,1) NOT NULL PRIMARY KEY, Name NVARCHAR(50)) END"
+        @@client.execute(query).do
     end
 end

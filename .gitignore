@@ -67,6 +67,6 @@ annotations
 public/.DS_Store
 /public/.DS_Store
 
-public/
+public/js/
 backup*
 annotations

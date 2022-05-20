@@ -11,9 +11,9 @@
 require 'json'
 
 class Book
-    attr_accessor :bookID, :BookName, :SupplierID, :CategoryID, :QuantityPerUnit, :UnitPrice, :UnitsInStock, :UnitsOnOrder, :ReorderLevel, :Discontinued
+    attr_accessor :BookID, :BookName, :SupplierID, :CategoryID, :QuantityPerUnit, :UnitPrice, :UnitsInStock, :UnitsOnOrder, :ReorderLevel, :Discontinued
     def initialize(params = {})
-        @BookID = params.fetch(:bookID, rand(0..99999))
+        @BookID = params.fetch(:BookID, rand(0..99999))
         @BookName = params.fetch(:BookName, "Lorem Ipsum #{@BookID}")
         @SupplierID = params.fetch(:SupplierID, rand(0..99999))
         @CategoryID = params.fetch(:CategoryID, rand(0..99999))
@@ -27,7 +27,7 @@ class Book
 
     def to_json
         { 
-            :bookID =>  @BookID,
+            :BookID =>  @BookID,
             :BookName => @BookName,
             :SupplierID => @SupplierID,
             :CategoryID => @CategoryID,
