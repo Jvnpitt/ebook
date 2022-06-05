@@ -10,6 +10,7 @@ class Database
             createDatabase()
             createBooksTable()
             createUsersTable()
+            createSessionTable()
             @@client.query_options[:symbolize_keys] = true
         end
     end
@@ -31,8 +32,12 @@ class Database
     end
 
     def createUsersTable()
-        # TODO: montar query
-        query = "USE ESebo; IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'Users') BEGIN CREATE TABLE Users (Id INT IDENTITY(1,1) NOT NULL PRIMARY KEY, Name NVARCHAR(50)) END"
+        query = "USE ESebo; IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'Users') BEGIN CREATE TABLE Users (UserID NVARCHAR(255), UserName NVARCHAR(255), Login NVARCHAR(255), Password NVARCHAR(255), PasswordSalt NVARCHAR(255)) END"
+        @@client.execute(query).do
+    end
+
+    def createSessionTable()
+        query = "USE ESebo; IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'Session') BEGIN CREATE TABLE Session (UserID NVARCHAR(255), SessionValue NVARCHAR(255), Flag tinyint) END"
         @@client.execute(query).do
     end
 end

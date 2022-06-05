@@ -34,8 +34,18 @@ class Routes
             request.body.rewind
             reqBody = JSON.parse(request.body.read, :symbolize_names => true)
 
+            user = User.new(reqBody)
+            jUser = user.to_json
+
+            # GoHorse to put " on strings
+            jUser.each do |k,v|
+                if v.class == String
+                    v.replace("\"#{v}\"")
+                end
+            end
+            
             # TODO update on db and check columns
-            query = "insert into Users values XYZ"
+            query = "insert into Users (UserID, UserName, Login, Password, PasswordSalt) values (#{jUser[:UserID]},#{jUser[:UserName]},#{jUser[:Login]},#{jUser[:Password]}, #{jUser[:PasswordSalt]});"
             Database.executeQuery(query)
         end
     end

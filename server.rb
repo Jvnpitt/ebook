@@ -1,6 +1,9 @@
 require "sinatra"
 
+# require_relative "#{Dir.pwd}/routes/cart.rb"
 require_relative "#{Dir.pwd}/routes/books.rb"
+require_relative "#{Dir.pwd}/routes/users.rb"
+# require_relative "#{Dir.pwd}/routes/orders.rb"
 
 class ESeboServer
     attr_accessor :port, :server
@@ -50,7 +53,7 @@ class ESeboServer
         # TODO add UI
         @@server.post '/users' do
             Routes::Users.insert(request)
-            redirect '/success'
+            "OK"
         end
 
         @@server.error 400..510 do 
