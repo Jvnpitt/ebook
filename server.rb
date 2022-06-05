@@ -50,10 +50,20 @@ class ESeboServer
             erb :all_users
         end
 
+        @@server.get '/users/:userID' do
+            @oneUser = Routes::Users.getOne(self)
+            @oneUser.to_json.to_s
+            # erb :one_user # TODO
+        end
+
         # TODO add UI
         @@server.post '/users' do
-            Routes::Users.insert(request)
-            "OK"
+            if Routes::Users.insert(request)
+                return "OK"
+            else
+                return "ERROR"
+            end
+            # erb :register_user # TODO
         end
 
         @@server.error 400..510 do 

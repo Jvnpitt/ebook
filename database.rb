@@ -32,7 +32,7 @@ class Database
     end
 
     def createUsersTable()
-        query = "USE ESebo; IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'Users') BEGIN CREATE TABLE Users (UserID NVARCHAR(255), UserName NVARCHAR(255), Login NVARCHAR(255), Password NVARCHAR(255), PasswordSalt NVARCHAR(255)) END"
+        query = "USE ESebo; IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'Users') BEGIN CREATE TABLE Users (UserID NVARCHAR(255), UserName NVARCHAR(255), Email NVARCHAR(255), Password NVARCHAR(255), PasswordSalt NVARCHAR(255)) END"
         @@client.execute(query).do
     end
 

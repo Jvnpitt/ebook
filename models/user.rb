@@ -1,10 +1,23 @@
 ### Example
 #
-# prodParams = { :UserID => 1234 }
-# hProd = User.new(prodParams)
-# hProd.UserName
-# jProd = hProd.to_json
-# jProd[:UserID]
+# userParams = { :UserID => 1234 }
+# hUser = User.new(userParams)
+# hUser.UserName
+# jUser = hUser.to_json
+# jUser[:UserID]
+#
+# # #
+#
+# POST /users HTTP/1.1
+# Host: 127.0.0.1:9999
+
+# {"UserName": "Teste 1", "Email" : "test@email.com", "Password": "1234"}
+#
+# # #
+#
+# GET /users/85060 HTTP/1.1
+# Host: 127.0.0.1:9999
+#
 #
 ###
 
@@ -13,12 +26,12 @@ require 'digest'
 require 'securerandom'
 
 class User
-    attr_accessor :UserID, :UserName, :Login, :Password
+    attr_accessor :UserID, :UserName, :Email, :Password
     def initialize(params = {})
         # @UserID = params.fetch(:UserID, rand(0..99999))
         @UserID = rand(0..99999)
         @UserName = params.fetch(:UserName, "Lorem Ipsum #{@UserID}")
-        @Login = params.fetch(:Login, rand(0..99999))
+        @Email = params.fetch(:Email, "test-#{rand(0..99999)}@email.com") ## login
         @Password = params.fetch(:Password, rand(0..99999))
         @PasswordSalt = SecureRandom.uuid
 
@@ -29,7 +42,7 @@ class User
         { 
             :UserID =>  @UserID,
             :UserName => @UserName,
-            :Login => @Login,
+            :Email => @Email,
             :Password => @Password,
             :PasswordSalt => @PasswordSalt
         }
