@@ -22,20 +22,16 @@
 ###
 
 require 'json'
-require 'digest'
-require 'securerandom'
+require 'bcrypt'
 
 class User
-    attr_accessor :UserID, :UserName, :Email, :Password
+    attr_accessor :UserID, :UserName, :Email, :Password, :PasswordSalt
     def initialize(params = {})
-        # @UserID = params.fetch(:UserID, rand(0..99999))
-        @UserID = rand(0..99999)
+        @UserID = params.fetch(:UserID, rand(0..99999))
         @UserName = params.fetch(:UserName, "Lorem Ipsum #{@UserID}")
         @Email = params.fetch(:Email, "test-#{rand(0..99999)}@email.com") ## login
-        @Password = params.fetch(:Password, rand(0..99999))
-        @PasswordSalt = SecureRandom.uuid
-
-        @Password = Digest::SHA512.hexdigest("#{@PasswordSalt}#{@Password}#{@PasswordSalt}")
+        @PasswordSalt = params.fetch(:PasswordSalt, BCrypt::Engine.generate_salt)
+        @Password = params.fetch(:Password, BCrypt::Engine.hash_secret(@Password, @PasswordSalt))
     end
 
     def to_json

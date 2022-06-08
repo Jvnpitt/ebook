@@ -59,6 +59,7 @@ class Routes
 
             user = User.new(reqBody)
             jUser = user.to_json
+            jUser[:Password] = BCrypt::Engine.hash_secret(jUser[:Password], jUser[:PasswordSalt])
 
             # GoHorse to put " on strings
             jUser.each do |k,v|
@@ -68,8 +69,10 @@ class Routes
             end
 
             unless checkExistence(jUser[:Email])
-                # TODO update on db and check columns
                 query = "insert into Users (UserID, UserName, Email, Password, PasswordSalt) values (#{jUser[:UserID]},#{jUser[:UserName]},#{jUser[:Email]},#{jUser[:Password]}, #{jUser[:PasswordSalt]});"
+                
+                ## TODO check why sometimes have error
+                # binding.pry
                 
                 Database.executeQuery(query)
                 return true

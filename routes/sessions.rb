@@ -7,53 +7,72 @@ require 'securerandom'
 class Routes
     class Sessions
         def self.doLogin(request)
+            newSession = nil
             request.body.rewind
             reqBody = JSON.parse(request.body.read, :symbolize_names => true)
 
-            unless reqBody[:Login].nil?
-                query = "select * from Users where Users.UserID = #{userID}"
+            unless reqBody[:Email].nil?
+                query = "select * from Users where Users.Email = \"#{reqBody[:Email]}\""
                 
                 begin
                     queryResult = Database.executeQuery(query)
                     oneUser = User.new(queryResult.first)
 
-                    tmpPassword = reqBody[:Password] || "#{SecureRandom.hex(50)}"
-                    tmpSalt = oneUser.PasswordSalt || "#{SecureRandom.hex(50)}"
+                    tmpSalt = oneUser.PasswordSalt || BCrypt::Engine.generate_salt
+                    tmpPassword = reqBody[:Password] || BCrypt::Password.create(SecureRandom.hex(50))
 
                     ## User enumeration time based mitigation
                     tmpUserID = "XXXXX"
                     flag = 0 # false
                     
-                    if oneUser.Password == Digest::SHA512.hexdigest("#{tmpSalt}#{tmpPassword}#{tmpSalt}")
+                    if oneUser.Password == BCrypt::Engine.hash_secret(tmpPassword, tmpSalt)
                         tmpUserID = oneUser.UserID
                         flag = 1 # true
                     end
 
                     newSession = Session.new({:UserID => tmpUserID, :Flag => flag})
-                    Sessions.insert(newSession)
+
+                    if Sessions.sessionExist?(newSession.UserID)
+                        Sessions.updateSessionValue(newSession.SessionValue, newSession.UserID)
+                    else
+                        Sessions.insert(newSession)
+                    end
+                    return newSession
                 rescue => exception
                     ## Do nothing
                 end
             end
         end
 
-        def self.generateSession(request)
-            userID = request.params[:userID]
-
-            query = "select * from Users where Users.UserID = #{userID}"
+        def self.isValid?(sessionValue)
+            query = "select * from SessionList where SessionList.SessionValue = \"#{sessionValue}\""
 
             queryResult = Database.executeQuery(query)
-            oneUser = User.new(queryResult.first)
-            return oneUser
+            oneSession = Session.new(queryResult.first)
+
+            if 1 == oneSession.Flag
+                return true
+            else
+                return false
+            end
         end
-        
-        def self.update(request)
-            request.body.rewind
-            reqBody = JSON.parse(request.body.read, :symbolize_names => true)
-            # TODO check session
-            # TODO update on db and check columns
-            query = "insert into Users values XYZ"
+
+        def self.updateSessionValue(sessionValue, userID)
+            query = "UPDATE SessionList SET SessionList.SessionValue = '#{sessionValue}' WHERE SessionList.UserID = \"#{userID}\""
             Database.executeQuery(query)
+        end
+
+        def self.sessionExist?(userID)
+            query = "select * from SessionList where SessionList.UserID = #{userID}"
+
+            queryResult = Database.executeQuery(query)
+            oneSession = Session.new(queryResult.first)
+
+            if oneSession
+                return true
+            else
+                return false
+            end
         end
     
         def self.insert(session)
@@ -65,9 +84,9 @@ class Routes
                     v.replace("\"#{v}\"")
                 end
             end
-            
+
             # TODO update on db and check columns with timestamp
-            query = "insert into Users (UserID, SessionToken, Flag) values (#{jSession[:UserID]},#{jSession[:SessionToken]},#{jSession[:Flag]});"
+            query = "insert into SessionList (UserID, SessionValue, Flag) values (#{jSession[:UserID]},#{jSession[:SessionValue]},#{jSession[:Flag]});"
             Database.executeQuery(query)
         end
     end

@@ -3,6 +3,7 @@ require "sinatra"
 # require_relative "#{Dir.pwd}/routes/cart.rb"
 require_relative "#{Dir.pwd}/routes/books.rb"
 require_relative "#{Dir.pwd}/routes/users.rb"
+require_relative "#{Dir.pwd}/routes/sessions.rb"
 # require_relative "#{Dir.pwd}/routes/orders.rb"
 
 class ESeboServer
@@ -51,14 +52,32 @@ class ESeboServer
         end
 
         @@server.get '/users/:userID' do
-            @oneUser = Routes::Users.getOne(self)
-            @oneUser.to_json.to_s
-            # erb :one_user # TODO
+            if Routes::Sessions.isValid?(request.cookies["esebosession"])
+                @oneUser = Routes::Users.getOne(self)
+                @oneUser.to_json.to_s
+                # erb :one_user # TODO
+            else
+                "ERROR"
+            end
         end
 
         # TODO add UI
         @@server.post '/users' do
             if Routes::Users.insert(request)
+                return "OK"
+            else
+                return "ERROR"
+            end
+            # erb :register_user # TODO
+        end
+
+        @@server.post '/login' do
+            newSession = Routes::Sessions.doLogin(request)
+            unless newSession.nil?
+                response.set_cookie("esebosession", :value => newSession.SessionValue.gsub("\"", ""),
+                    :path => "/",
+                    :httponly => true)
+                    # :expires => Date.new(2020,1,1))
                 return "OK"
             else
                 return "ERROR"

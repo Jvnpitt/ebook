@@ -37,7 +37,7 @@ class Database
     end
 
     def createSessionTable()
-        query = "USE ESebo; IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'Session') BEGIN CREATE TABLE Session (UserID NVARCHAR(255), SessionValue NVARCHAR(255), Flag tinyint) END"
+        query = "USE ESebo; IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'SessionList') BEGIN CREATE TABLE SessionList (UserID NVARCHAR(255), SessionValue NVARCHAR(255), Flag tinyint) END"
         @@client.execute(query).do
     end
 end

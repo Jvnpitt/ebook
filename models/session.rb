@@ -12,13 +12,13 @@ class Session
     def initialize(params = {})
         @Flag = params.fetch(:Flag, 0)
         @UserID = params.fetch(:UserID)
-        @SessionValue = "#{SecureRandom.uuid}#{SecureRandom.hex(13)}#{SecureRandom.uuid}"
+        @SessionValue = params.fetch(:SessionValue, "#{SecureRandom.uuid}#{SecureRandom.hex(13)}#{SecureRandom.uuid}")
     end
 
     def to_json
         { 
             :UserID => @UserID,
-            :SessionValue => @SessionValue
+            :SessionValue => @SessionValue,
             :Flag => @Flag
         }
     end
