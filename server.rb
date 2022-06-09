@@ -1,6 +1,6 @@
 require "sinatra"
 
-# require_relative "#{Dir.pwd}/routes/cart.rb"
+require_relative "#{Dir.pwd}/routes/carts.rb"
 require_relative "#{Dir.pwd}/routes/books.rb"
 require_relative "#{Dir.pwd}/routes/users.rb"
 require_relative "#{Dir.pwd}/routes/orders.rb"
@@ -35,6 +35,23 @@ class ESeboServer
             erb :login
         end
 
+        @@server.get '/cart' do
+            @allBooks = Routes::Carts.getCart(request)
+            erb :cart
+        end
+
+        # TODO change to post
+        @@server.get '/cart/:bookID' do
+            Routes::Carts.addToCart(self)
+            "OK"
+        end
+
+        # TODO change to post
+        # @@server.post '/cart' do
+        #     Routes::Cart.addCart(request)
+        #     erb "OK"
+        # end
+
         @@server.get '/orders' do
             @allOrders = Routes::Orders.getAll(request)
             # erb :all_books
@@ -55,6 +72,11 @@ class ESeboServer
         @@server.get '/books/:bookID' do
             @oneBook = Routes::Books.getOne(self)
             erb :one_book
+        end
+
+        @@server.post '/books/search' do
+            @returnedBooks = Routes::Books.search(request)
+            erb :search_return
         end
 
         @@server.post '/books' do
@@ -99,11 +121,10 @@ class ESeboServer
                     :path => "/",
                     :httponly => true)
                     # :expires => Date.new(2020,1,1))
-                return "OK"
+                redirect "/", 200
             else
-                return "ERROR"
+                erb :login_error
             end
-            # erb :register_user # TODO
         end
 
         @@server.error 400..510 do 

@@ -73,6 +73,16 @@ class Routes
         def self.insert(request)
             request.body.rewind
             reqBody = JSON.parse(request.body.read, :symbolize_names => true)
+
+            # get cart
+            
+
+            # TODO get from cart and add on db
+            bookList.each do |book|
+                queryOrderDetails = "insert into OrderDetails (OrderID, OrderDetailsID, BookID, BookQuantity), values (#{orderDetails[:OrderID]}, #{orderDetails[:OrderDetailsID]}, #{orderDetails[:BookID]}, #{orderDetails[:BookQuantity]})"
+
+                queryResult = Database.executeQuery(query)
+            end
         end
     end
 end

@@ -13,6 +13,7 @@ class Database
             createSessionTable()
             createOrderTable()
             createOrderDetailsTable()
+            createCartsTable()
             @@client.query_options[:symbolize_keys] = true
         end
     end
@@ -28,7 +29,7 @@ class Database
     end
 
     def createBooksTable()
-        query = "USE ESebo; IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'Books') BEGIN CREATE TABLE Books (BookID NVARCHAR(255), BookImgURL NVARCHAR(255),BookName NVARCHAR(255),AuthorName NVARCHAR(255),CategoryName NVARCHAR(255),UnitPrice Float,UnitsInStock int) END"
+        query = "USE ESebo; IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'Books') BEGIN CREATE TABLE Books (BookID NVARCHAR(255), BookImgURL NVARCHAR(255),BookName NVARCHAR(255),AuthorName NVARCHAR(255),CategoryName NVARCHAR(255), BookDescription NVARCHAR(3000), UnitPrice Float,UnitsInStock int) END"
         @@client.execute(query).do
     end
 

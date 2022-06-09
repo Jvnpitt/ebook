@@ -16,26 +16,20 @@ class Routes
         end
 
         def self.addToCart(request)
-            reqBody = {}
-            request.body.rewind
-            
-            reqBody = JSON.parse(request.body.read, :symbolize_names => true) unless request.body.read.empty?
+            userID = Routes::Sessions.getUserIDFromSession(request.request.cookies["esebosession"])
+            bookID = request.params[:bookID]
+            cart = Cart.new(:CartID => userID, :UserID => userID, :BookID => bookID)
 
-            bookID = reqBody["BookID"]
-            bookQuantity = reqBody["BookQuantity"]
-            userID = Routes::Sessions.getUserIDFromSession(request.cookies["esebosession"])
-
-            cart = Cart.new(CartID => userID, UserID => userID, BookID => bookID, BookQuantity => bookQuantity)
-            
-            Cart.insert(cart)
+            Carts.insert(cart)
         end
 
+        # TODO
         def self.removeFromCart(request)
             cartID = nil
             reqBody = {}
             request.body.rewind
             
-            reqBody = JSON.parse(request.body.read, :symbolize_names => true) unless request.body.read.empty?
+            reqBody = JSON.parse(request.body.read, :symbolize_names => true) # unless request.body.read.empty?
 
             bookID = reqBody["BookID"]
             bookQuantity = reqBody["BookQuantity"]
@@ -47,17 +41,7 @@ class Routes
         end
     
         def self.insert(cart)
-            jCart = cart.to_json
-
-            # GoHorse to put " on strings
-            jCart.each do |k,v|
-                if v.class == String
-                    v.replace("\"#{v}\"")
-                end
-            end
-
-            # TODO update on db and check columns
-            query = "insert into Carts (CartID, UserID, BookID, BookQuantity) values (#{jCart[:CartID]}, #{jCart[:UserID]},#{jCart[:BookID]}, #{jCart[:BookQuantity]});"
+            query = "insert into Carts (UserID, CartID, BookID, BookQuantity) values (#{cart.UserID},#{cart.CartID},#{cart.BookID},#{cart.BookQuantity});"
             Database.executeQuery(query)
         end
 

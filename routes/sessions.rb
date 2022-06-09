@@ -12,7 +12,7 @@ class Routes
             reqBody = JSON.parse(request.body.read, :symbolize_names => true)
 
             unless reqBody[:Email].nil?
-                query = "select * from Users where Users.Email = \"#{reqBody[:Email]}\""
+                query = "select * from Users where Users.Email = '#{reqBody[:Email].downcase}'"
                 
                 begin
                     queryResult = Database.executeQuery(query)
@@ -24,7 +24,7 @@ class Routes
                     ## User enumeration time based mitigation
                     tmpUserID = "XXXXX"
                     flag = 0 # false
-                    
+
                     if oneUser.Password == BCrypt::Engine.hash_secret(tmpPassword, tmpSalt)
                         tmpUserID = oneUser.UserID
                         flag = 1 # true
@@ -37,9 +37,11 @@ class Routes
                     else
                         Sessions.insert(newSession)
                     end
+
+                    newSession = nil if 0 == flag
                     return newSession
                 rescue => exception
-                    ## Do nothing
+                    puts exception
                 end
             end
         end
@@ -75,12 +77,11 @@ class Routes
             query = "select * from SessionList where SessionList.UserID = #{userID}"
 
             queryResult = Database.executeQuery(query)
-            oneSession = Session.new(queryResult.first)
 
-            if oneSession
-                return true
-            else
+            unless queryResult.first.nil?
                 return false
+            else
+                return true
             end
         end
     

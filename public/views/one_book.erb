@@ -29,10 +29,16 @@
                     <!-- MEIO TOPO MEIO PRINCIPAL --> 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav mx-auto">
+                            <li class="dropdown dropdown-full nav-item"><a href="/" class="nav-link">Inicio</a> <label
+                                    class="px-dropdown-toggle mob-menu"></label>
+                            </li>
                             <li class="dropdown dropdown-full nav-item"><a href="/login" class="nav-link">Login</a> <label
                                     class="px-dropdown-toggle mob-menu"></label>
                             </li>
-                            <li class="dropdown dropdown-full nav-item"><a href="#" class="nav-link">Buscar</a> <label
+                            <li class="dropdown dropdown-full nav-item"><a href="/register" class="nav-link">Cadastro</a> <label
+                                    class="px-dropdown-toggle mob-menu"></label>
+                            </li>
+                            <li class="dropdown dropdown-full nav-item"><a href="/search" class="nav-link">Busca</a> <label
                                     class="px-dropdown-toggle mob-menu"></label>
                             </li>
                         </ul>
@@ -70,16 +76,23 @@
                                         <i class="bi bi-star-fill active"></i>
                                         <i class="bi bi-star"></i>
                                     </div>
-                                    <h6 class="product-title"><a href="/books/<%= @oneBook.BookID %>"><%= @oneBook.BookName %></a></h6>
-                                    <div class="product-price">
-                                        <span class="text-primary">Preço: R$ <%= @oneBook.UnitPrice.to_f %></span>
-                                        <del class="fs-sm text-muted">R$ <%= @oneBook.UnitPrice.to_f + 10 %>
-                                        </del>
-                                    </div>
                                 </div>
                             </div>
                             <%# <!-- End Product Box --> %>
                         </div><!-- End Product Box -->
+                        
+                        <div class="col-6 col-md-4 col-lg-3">
+                            <h1>.</h1>
+                            <h6 class="product-title"><a href="/books/<%= @oneBook.BookID %>"><%= @oneBook.BookName %></a></h6>
+                            <div class="product-price">
+                            <div class="product-price">
+                                <del class="fs-sm text-muted">R$ <%= @oneBook.UnitPrice.to_f + (@oneBook.UnitPrice.to_f * 10 / 100) %></del>
+                                <span class="text-primary">R$ <%= @oneBook.UnitPrice.to_f %></span>
+                            </div>
+                            <span>Autor: <%= @oneBook.AuthorName %></span><br>
+                            <span>Categoria: <%= @oneBook.CategoryName %></span><br>
+                            <span>Descrição: <%= @oneBook.BookDescription %></span><br>
+                        </div>
                     </div>
                 </div>
             </section><!-- End Product section -->
@@ -91,7 +104,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-6 text-center text-md-start py-1">
-                            <p class="m-0 text-white-85">© 2022 copyright by <a href="#" class="text-reset">pxdraft</a>
+                            <p class="m-0 text-white-85">UI Template © 2022 copyright by <a href="#" class="text-reset">pxdraft</a>
                             </p>
                         </div>
                         <div class="col-md-6 text-center text-md-end py-1"><img src="/img/payments.png" title="" alt="">

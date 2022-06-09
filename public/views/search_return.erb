@@ -54,7 +54,7 @@
                 <div class="container">
                     <div class="row g-2 g-sm-3 g-lg-4">
                         <!-- Product Box -->
-                        <% @allBooks.each do |book| %>
+                        <% @returnedBooks.each do |book| %>
                         <div class="col-6 col-md-4 col-lg-3">
                         <br>
                         <br>
@@ -64,7 +64,7 @@
                                         <div class="product-action"></div>
                                         <div class="product-media"><a href="/books/<%= book.BookID %>">
                                         <img class="img-fluid" src="<%= book.BookImgURL %>" title="" alt=""></a>
-                                            <div class="product-cart-btn"><a href="/cart/<%= book.BookID %>"
+                                            <div class="product-cart-btn"><a href="#"
                                                     class="btn btn-primary btn-sm w-100"><i class=""></i>
                                                     Adicionar ao carrinho</a></div>
                                         </div>
@@ -79,9 +79,8 @@
                                         </div>
                                         <h6 class="product-title"><a href="/books/<%= book.BookID %>"><%= book.BookName %></a></h6>
                                         <div class="product-price">
-                                            <del class="fs-sm text-muted">R$ <%= book.UnitPrice + (book.UnitPrice * 10 / 100)%></del>
-                                            <br>
-                                            <span class="text-primary">R$ <%= book.UnitPrice %></span>
+                                            <del class="fs-sm text-muted">R$ <%= book.UnitPrice.to_f  + (book.UnitPrice.to_f * 10 / 100)%></del>
+                                            <span class="text-primary">R$ <%= book.UnitPrice.to_f %></span>
                                         </div>
                                     </div>
                                 </div>
@@ -99,7 +98,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-6 text-center text-md-start py-1">
-                            <p class="m-0 text-white-85">© 2022 copyright by <a href="#" class="text-reset">pxdraft</a>
+                            <p class="m-0 text-white-85">UI Template © 2022 copyright by <a href="#" class="text-reset">pxdraft</a>
                             </p>
                         </div>
                         <div class="col-md-6 text-center text-md-end py-1"><img src="/img/payments.png" title="" alt="">

@@ -30,6 +30,7 @@ class User
         @UserID = params.fetch(:UserID, rand(0..99999))
         @UserName = params.fetch(:UserName, "Lorem Ipsum #{@UserID}")
         @Email = params.fetch(:Email, "test-#{rand(0..99999)}@email.com") ## login
+        @Email = @Email.downcase
         @PasswordSalt = params.fetch(:PasswordSalt, BCrypt::Engine.generate_salt)
         @Password = params.fetch(:Password, BCrypt::Engine.hash_secret(@Password, @PasswordSalt))
     end
