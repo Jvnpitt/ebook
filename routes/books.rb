@@ -4,7 +4,8 @@ class Routes
     class Books
         def self.getAll(request)
             bookList = []
-            queryResult = Database.executeQuery("select * from Books")
+            query = "select * from Books"
+            queryResult = Database.executeQuery(query)
             queryResult.each do |row|
                 bookList << Book.new(row)
             end
@@ -20,6 +21,25 @@ class Routes
             oneBook = Book.new(queryResult.first)
             return oneBook
         end
+
+        def self.search(request)
+            bookList = []
+
+            request.body.rewind
+            reqBody = JSON.parse(request.body.read, :symbolize_names => true)
+
+            bookName = reqBody[:BookName]
+
+            query = "select * from Books where Books.BookName LIKE '%#{bookName}%'"
+
+            queryResult = Database.executeQuery(query)
+            unless queryResult.nil?
+                queryResult.each do |row|
+                    bookList << Book.new(row)
+                end
+            end
+            return bookList
+        end
         
         def self.update(request)
             request.body.rewind
@@ -27,9 +47,12 @@ class Routes
         end
     
         def self.insert(request)
+            reqBody = {}
             request.body.rewind
+            
             reqBody = JSON.parse(request.body.read, :symbolize_names => true)
 
+            
             book = Book.new(reqBody)
             jBook = book.to_json
 
@@ -40,7 +63,7 @@ class Routes
                 end
             end
 
-            query = "insert into Books (BookID, BookName, SupplierID, CategoryID, QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued) values (#{jBook[:BookID]},#{jBook[:BookName]},#{jBook[:SupplierID]},#{jBook[:CategoryID]},#{jBook[:QuantityPerUnit]},#{jBook[:UnitPrice]},#{jBook[:UnitsInStock]},#{jBook[:UnitsOnOrder]},#{jBook[:ReorderLevel]},#{jBook[:Discontinued]});"
+            query = "insert into Books (BookID, BookName, AuthorName, CategoryName, UnitPrice, UnitsInStock, BookImgURL, BookDescription) values (#{jBook[:BookID]},#{jBook[:BookName]},#{jBook[:AuthorName]},#{jBook[:CategoryName]},#{jBook[:UnitPrice]},#{jBook[:UnitsInStock]},#{jBook[:BookImgURL]}, #{jBook[:BookDescription]});"
 
             queryResult = Database.executeQuery(query)
         end
