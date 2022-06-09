@@ -44,6 +44,15 @@ class Routes
             end
         end
 
+        def self.getUserIDFromSession(sessionValue)
+            query = "select * from SessionList where SessionList.SessionValue = \"#{sessionValue}\""
+
+            queryResult = Database.executeQuery(query)
+            oneSession = Session.new(queryResult.first)
+
+            return oneSession.UserID
+        end
+
         def self.isValid?(sessionValue)
             query = "select * from SessionList where SessionList.SessionValue = \"#{sessionValue}\""
 

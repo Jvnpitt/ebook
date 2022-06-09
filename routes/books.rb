@@ -27,9 +27,12 @@ class Routes
         end
     
         def self.insert(request)
+            reqBody = {}
             request.body.rewind
+            
             reqBody = JSON.parse(request.body.read, :symbolize_names => true)
 
+            
             book = Book.new(reqBody)
             jBook = book.to_json
 
@@ -40,7 +43,7 @@ class Routes
                 end
             end
 
-            query = "insert into Books (BookID, BookName, SupplierID, CategoryID, QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued) values (#{jBook[:BookID]},#{jBook[:BookName]},#{jBook[:SupplierID]},#{jBook[:CategoryID]},#{jBook[:QuantityPerUnit]},#{jBook[:UnitPrice]},#{jBook[:UnitsInStock]},#{jBook[:UnitsOnOrder]},#{jBook[:ReorderLevel]},#{jBook[:Discontinued]});"
+            query = "insert into Books (BookID, BookName, AuthorName, CategoryName, UnitPrice, UnitsInStock, BookImgURL) values (#{jBook[:BookID]},#{jBook[:BookName]},#{jBook[:AuthorName]},#{jBook[:CategoryName]},#{jBook[:UnitPrice]},#{jBook[:UnitsInStock]},#{jBook[:BookImgURL]});"
 
             queryResult = Database.executeQuery(query)
         end

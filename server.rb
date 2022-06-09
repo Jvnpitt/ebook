@@ -3,8 +3,8 @@ require "sinatra"
 # require_relative "#{Dir.pwd}/routes/cart.rb"
 require_relative "#{Dir.pwd}/routes/books.rb"
 require_relative "#{Dir.pwd}/routes/users.rb"
+require_relative "#{Dir.pwd}/routes/orders.rb"
 require_relative "#{Dir.pwd}/routes/sessions.rb"
-# require_relative "#{Dir.pwd}/routes/orders.rb"
 
 class ESeboServer
     attr_accessor :port, :server
@@ -27,7 +27,24 @@ class ESeboServer
     private
     def load_routes
         @@server.get '/' do
+            @allBooks = Routes::Books.getAll(request)
             erb :default_index
+        end
+
+        @@server.get '/login' do
+            erb :login
+        end
+
+        @@server.get '/orders' do
+            @allOrders = Routes::Orders.getAll(request)
+            # erb :all_books
+            "OK"
+        end
+
+        @@server.get '/orders/:orderID' do
+            @oneOrder = Routes::Orders.getOne(self)
+            # erb :all_books
+            "OK"
         end
 
         @@server.get '/books' do
@@ -43,6 +60,10 @@ class ESeboServer
         @@server.post '/books' do
             @oneBook = Routes::Books.insert(request)
             # erb :one_book
+        end
+
+        @@server.get '/register' do
+            erb :register
         end
 
         # TODO Check if is necessary
@@ -64,9 +85,9 @@ class ESeboServer
         # TODO add UI
         @@server.post '/users' do
             if Routes::Users.insert(request)
-                return "OK"
+                redirect "/", 200
             else
-                return "ERROR"
+                redirect "/", 404
             end
             # erb :register_user # TODO
         end
