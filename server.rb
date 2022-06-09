@@ -1,6 +1,10 @@
 require "sinatra"
 
+# require_relative "#{Dir.pwd}/routes/cart.rb"
 require_relative "#{Dir.pwd}/routes/books.rb"
+require_relative "#{Dir.pwd}/routes/users.rb"
+require_relative "#{Dir.pwd}/routes/orders.rb"
+require_relative "#{Dir.pwd}/routes/sessions.rb"
 
 class ESeboServer
     attr_accessor :port, :server
@@ -23,7 +27,24 @@ class ESeboServer
     private
     def load_routes
         @@server.get '/' do
+            @allBooks = Routes::Books.getAll(request)
             erb :default_index
+        end
+
+        @@server.get '/login' do
+            erb :login
+        end
+
+        @@server.get '/orders' do
+            @allOrders = Routes::Orders.getAll(request)
+            # erb :all_books
+            "OK"
+        end
+
+        @@server.get '/orders/:orderID' do
+            @oneOrder = Routes::Orders.getOne(self)
+            # erb :all_books
+            "OK"
         end
 
         @@server.get '/books' do
@@ -41,16 +62,48 @@ class ESeboServer
             # erb :one_book
         end
 
+        @@server.get '/register' do
+            erb :register
+        end
+
         # TODO Check if is necessary
         @@server.get '/users' do
             @allUsers = Routes::Users.getAll(request)
             erb :all_users
         end
 
+        @@server.get '/users/:userID' do
+            if Routes::Sessions.isValid?(request.cookies["esebosession"])
+                @oneUser = Routes::Users.getOne(self)
+                @oneUser.to_json.to_s
+                # erb :one_user # TODO
+            else
+                "ERROR"
+            end
+        end
+
         # TODO add UI
         @@server.post '/users' do
-            Routes::Users.insert(request)
-            redirect '/success'
+            if Routes::Users.insert(request)
+                redirect "/", 200
+            else
+                redirect "/", 404
+            end
+            # erb :register_user # TODO
+        end
+
+        @@server.post '/login' do
+            newSession = Routes::Sessions.doLogin(request)
+            unless newSession.nil?
+                response.set_cookie("esebosession", :value => newSession.SessionValue.gsub("\"", ""),
+                    :path => "/",
+                    :httponly => true)
+                    # :expires => Date.new(2020,1,1))
+                return "OK"
+            else
+                return "ERROR"
+            end
+            # erb :register_user # TODO
         end
 
         @@server.error 400..510 do 

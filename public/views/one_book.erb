@@ -1,75 +1,128 @@
 <!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>ESebo</title>
-        <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/album/">
-        <link href="/css/bootstrap.min.css" rel="stylesheet">
+<html lang="zxx" class="dark">
 
-        <style>
-        .bd-placeholder-img {
-            font-size: 1.125rem;
-            text-anchor: middle;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            user-select: none;
-        }
+<head>
+    <!-- metas -->
+    <meta charset="utf-8">
+    <meta name="author" content="pxdraft">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <meta name="keywords" content="Crikon – Multipurpose Template">
+    <meta name="description" content="Crikon – Multipurpose Template"><!-- title -->
+    <title>E-Sebo</title><!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico"><!-- CSS Template -->
+    <link href="/css/theme.css" rel="stylesheet">
+</head>
 
-        @media (min-width: 768px) {
-            .bd-placeholder-img-lg {
-            font-size: 3.5rem;
-            }
-        }
-        </style>
-    </head>
-    <body>
-
-    <header>
-    <main>
-        <section class="py-5 text-center container">
-            <div class="row py-lg-5">
-                <div class="col-lg-6 col-md-8 mx-auto">
-                    <h1 class="fw-light">Produto <%= @oneBook.BookID %></h1>
-                    <p>
-                        <a href="/books" class="btn btn-primary my-2">Lista de Produtos</a>
-                        <a href="/customers" class="btn btn-secondary my-2">Lista de Clientes</a>
-                        <a href="/insert/customers" class="btn btn-primary my-2">Inserir Cliente</a>
-                        <a href="/orders" class="btn btn-secondary my-2">Lista de Pedidos</a>
-                        <a href="/report" class="btn btn-primary my-2">Relatório de Pedidos</a>
-                    </p>
+<body>
+    <%# <--
+    ========================
+        Wrapper 
+    ========================
+    --> %>
+    <div class="wrapper">
+        <!-- heder height -->
+        <div class="header-height-bar"></div><!-- Header -->
+        <header class="header-main bg-white header-light fixed-top header-height header-option-1">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <div class="container">
+                    <!-- MEIO TOPO MEIO PRINCIPAL --> 
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mx-auto">
+                            <li class="dropdown dropdown-full nav-item"><a href="/login" class="nav-link">Login</a> <label
+                                    class="px-dropdown-toggle mob-menu"></label>
+                            </li>
+                            <li class="dropdown dropdown-full nav-item"><a href="#" class="nav-link">Buscar</a> <label
+                                    class="px-dropdown-toggle mob-menu"></label>
+                            </li>
+                        </ul>
+                    </div><!-- End Menu -->
                 </div>
-            </div>
-        </section>
-
-        <div class="album py-5 bg-light">
-            <div class="container">
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                    <div class="col">
-                    <!-- start here -->
-                        <div class="card shadow-sm">
-                            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title><%= @oneBook.BookID %></title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Numero do Produto: <%= @oneBook.BookID %></text></svg>
-                            <div class="card-body">
-                                <p class="card-text">Nome do Produto: <%= @oneBook.BookName %></p>
-                                <p class="card-text">Valor: R$ <%= @oneBook.UnitPrice.to_f %></p>
-                                <p class="card-text">Unidade: <%= @oneBook.QuantityPerUnit %></p>
-                                <p class="card-text">QTD em Estoque: <%= @oneBook.UnitsInStock %></p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="btn-group">
-                                        <!-- ## TODO Add Route -->
-                                        <!-- <form action=""> -->
-                                            <!-- <button type="submit" class="btn btn-sm btn-outline-secondary">Buy</button> -->
-                                        <!-- </form> -->
+            </nav>
+        </header><!-- End Header -->
+        <!-- Main -->
+        <main>
+            <!-- section -->
+            <!-- Product section -->
+            <section class="section">
+                <div class="container">
+                    <div class="row g-2 g-sm-3 g-lg-4">
+                        <!-- Product Box -->
+                        <div class="col-6 col-md-4 col-lg-3">
+                        <br>
+                        <br>
+                            <div class="product-card-1">
+                                <div class="product-card-image">
+                                    <div class="badge-ribbon"><span class="badge bg-danger">Sale</span></div>
+                                    <div class="product-action"></div>
+                                    <div class="product-media"><a href="/books/<%= @oneBook.BookID %>">
+                                    <img class="img-fluid" src="<%= @oneBook.BookImgURL %>" title="" alt=""></a>
+                                        <div class="product-cart-btn"><a href="#"
+                                                class="btn btn-primary btn-sm w-100"><i class=""></i>
+                                                Adicionar ao carrinho</a></div>
+                                    </div>
+                                </div>
+                                <div class="product-card-info">
+                                    <div class="rating-star text">
+                                        <i class="bi bi-star-fill active"></i>
+                                        <i class="bi bi-star-fill active"></i>
+                                        <i class="bi bi-star-fill active"></i>
+                                        <i class="bi bi-star-fill active"></i>
+                                        <i class="bi bi-star"></i>
+                                    </div>
+                                    <h6 class="product-title"><a href="/books/<%= @oneBook.BookID %>"><%= @oneBook.BookName %></a></h6>
+                                    <div class="product-price">
+                                        <span class="text-primary">Preço: R$ <%= @oneBook.UnitPrice.to_f %></span>
+                                        <del class="fs-sm text-muted">R$ <%= @oneBook.UnitPrice.to_f + 10 %>
+                                        </del>
                                     </div>
                                 </div>
                             </div>
+                            <%# <!-- End Product Box --> %>
+                        </div><!-- End Product Box -->
+                    </div>
+                </div>
+            </section><!-- End Product section -->
+            <!-- call to action -->
+        </main><!-- End Main -->
+        <!-- Footer -->
+        <footer class="bg-dark footer">
+            <div class="footer-bottom py-2 footer-border-top light small">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 text-center text-md-start py-1">
+                            <p class="m-0 text-white-85">© 2022 copyright by <a href="#" class="text-reset">pxdraft</a>
+                            </p>
+                        </div>
+                        <div class="col-md-6 text-center text-md-end py-1"><img src="/img/payments.png" title="" alt="">
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </main>
+        </footer><!-- End Footer -->
+    </div>
+    <!-- 
+    ========================
+       End Wrapper 
+    ========================
+    -->
+    <!-- script start -->
+    <!-- jquery -->
+    <script src="/js/jquery-3.5.1.min.js"></script>
+    <!--bootstrap-->
+    <script src="/js/bootstrap.bundle.min.js"></script><!-- slick carousel -->
+    <script src="/js/swiper-bundle.min.js"></script><!-- magnific -->
+    <script src="/js/jquery.magnific-popup.min.js"></script><!-- isotope -->
+    <script src="/js/isotope.pkgd.min.js"></script><!-- count-down -->
+    <script src="/js/jquery.countdown.min.js"></script><!-- count-down -->
+    <script src="/js/jarallax-all.js"></script><!-- Theme Js -->
+    <script src="/js/custom.js"></script>
+    <script src="/js/theme.js"></script><!-- End script start -->
+</body>
 
-    <script src="/js/bootstrap.bundle.min.js"></script>
-    </body>
+</html>
+<link href="/css/bootstrap.min.css" rel="stylesheet">
+<script src="/js/bootstrap.bundle.min.js"></script>
+</body>
+
 </html>

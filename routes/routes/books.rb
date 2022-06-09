@@ -63,11 +63,7 @@ class Routes
                 end
             end
 
-<<<<<<< HEAD
             query = "insert into Books (BookID, BookName, AuthorName, CategoryName, UnitPrice, UnitsInStock, BookImgURL, BookDescription) values (#{jBook[:BookID]},#{jBook[:BookName]},#{jBook[:AuthorName]},#{jBook[:CategoryName]},#{jBook[:UnitPrice]},#{jBook[:UnitsInStock]},#{jBook[:BookImgURL]}, #{jBook[:BookDescription]});"
-=======
-            query = "insert into Books (BookID, BookName, AuthorName, CategoryName, UnitPrice, UnitsInStock, BookImgURL) values (#{jBook[:BookID]},#{jBook[:BookName]},#{jBook[:AuthorName]},#{jBook[:CategoryName]},#{jBook[:UnitPrice]},#{jBook[:UnitsInStock]},#{jBook[:BookImgURL]});"
->>>>>>> 0e93e6460a914628d37d6926940b721167534626
 
             queryResult = Database.executeQuery(query)
         end

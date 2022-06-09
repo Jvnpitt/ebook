@@ -12,11 +12,7 @@ class Routes
             reqBody = JSON.parse(request.body.read, :symbolize_names => true)
 
             unless reqBody[:Email].nil?
-<<<<<<< HEAD
                 query = "select * from Users where Users.Email = '#{reqBody[:Email].downcase}'"
-=======
-                query = "select * from Users where Users.Email = \"#{reqBody[:Email]}\""
->>>>>>> 0e93e6460a914628d37d6926940b721167534626
                 
                 begin
                     queryResult = Database.executeQuery(query)
@@ -28,11 +24,7 @@ class Routes
                     ## User enumeration time based mitigation
                     tmpUserID = "XXXXX"
                     flag = 0 # false
-<<<<<<< HEAD
 
-=======
-                    
->>>>>>> 0e93e6460a914628d37d6926940b721167534626
                     if oneUser.Password == BCrypt::Engine.hash_secret(tmpPassword, tmpSalt)
                         tmpUserID = oneUser.UserID
                         flag = 1 # true
@@ -45,17 +37,11 @@ class Routes
                     else
                         Sessions.insert(newSession)
                     end
-<<<<<<< HEAD
 
                     newSession = nil if 0 == flag
                     return newSession
                 rescue => exception
                     puts exception
-=======
-                    return newSession
-                rescue => exception
-                    ## Do nothing
->>>>>>> 0e93e6460a914628d37d6926940b721167534626
                 end
             end
         end
@@ -91,20 +77,11 @@ class Routes
             query = "select * from SessionList where SessionList.UserID = #{userID}"
 
             queryResult = Database.executeQuery(query)
-<<<<<<< HEAD
 
             unless queryResult.first.nil?
                 return false
             else
                 return true
-=======
-            oneSession = Session.new(queryResult.first)
-
-            if oneSession
-                return true
-            else
-                return false
->>>>>>> 0e93e6460a914628d37d6926940b721167534626
             end
         end
     

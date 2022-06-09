@@ -82,11 +82,7 @@ class Routes
         end
 
         def self.checkExistence(email)
-<<<<<<< HEAD
             query = "select * from Users where Users.Email = #{email.downcase}"
-=======
-            query = "select * from Users where Users.Email = #{email}"
->>>>>>> 0e93e6460a914628d37d6926940b721167534626
 
             queryResult = Database.executeQuery(query)
             ret = queryResult.first

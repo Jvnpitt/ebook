@@ -73,7 +73,6 @@ class Routes
         def self.insert(request)
             request.body.rewind
             reqBody = JSON.parse(request.body.read, :symbolize_names => true)
-<<<<<<< HEAD
 
             # get cart
             
@@ -84,8 +83,6 @@ class Routes
 
                 queryResult = Database.executeQuery(query)
             end
-=======
->>>>>>> 0e93e6460a914628d37d6926940b721167534626
         end
     end
 end
