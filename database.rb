@@ -10,6 +10,9 @@ class Database
             createDatabase()
             createBooksTable()
             createUsersTable()
+            createSessionTable()
+            createOrderTable()
+            createOrderDetailsTable()
             @@client.query_options[:symbolize_keys] = true
         end
     end
@@ -25,14 +28,32 @@ class Database
     end
 
     def createBooksTable()
-        # TODO: montar query
-        query = "USE ESebo; IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'Books') BEGIN CREATE TABLE Books (BookID NVARCHAR(255),BookName NVARCHAR(255),SupplierID NVARCHAR(255),CategoryID NVARCHAR(255),QuantityPerUnit NVARCHAR(255),UnitPrice NVARCHAR(255),UnitsInStock NVARCHAR(255),UnitsOnOrder NVARCHAR(255),ReorderLevel NVARCHAR(255),Discontinued NVARCHAR(255)) END"
+        query = "USE ESebo; IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'Books') BEGIN CREATE TABLE Books (BookID NVARCHAR(255), BookImgURL NVARCHAR(255),BookName NVARCHAR(255),AuthorName NVARCHAR(255),CategoryName NVARCHAR(255),UnitPrice Float,UnitsInStock int) END"
         @@client.execute(query).do
     end
 
     def createUsersTable()
-        # TODO: montar query
-        query = "USE ESebo; IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'Users') BEGIN CREATE TABLE Users (Id INT IDENTITY(1,1) NOT NULL PRIMARY KEY, Name NVARCHAR(50)) END"
+        query = "USE ESebo; IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'Users') BEGIN CREATE TABLE Users (UserID NVARCHAR(255), UserName NVARCHAR(255), Email NVARCHAR(255), Password NVARCHAR(255), PasswordSalt NVARCHAR(255)) END"
+        @@client.execute(query).do
+    end
+
+    def createSessionTable()
+        query = "USE ESebo; IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'SessionList') BEGIN CREATE TABLE SessionList (UserID NVARCHAR(255), SessionValue NVARCHAR(255), Flag tinyint) END"
+        @@client.execute(query).do
+    end
+
+    def createOrderTable()
+        query = "USE ESebo; IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'Orders') BEGIN CREATE TABLE Orders (OrderID NVARCHAR(255), UserID NVARCHAR(255), OrderDetailsID NVARCHAR(255), OrderDate NVARCHAR(255), OrderValue FLOAT) END"
+        @@client.execute(query).do
+    end
+
+    def createOrderDetailsTable()
+        query = "USE ESebo; IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'OrderDetails') BEGIN CREATE TABLE OrderDetails (OrderID NVARCHAR(255), OrderDetailsID NVARCHAR(255), BookID NVARCHAR(255), BookQuantity int) END"
+        @@client.execute(query).do
+    end
+    
+    def createCartsTable()
+        query = "USE ESebo; IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'Carts') BEGIN CREATE TABLE Carts (CartID NVARCHAR(255), UserID NVARCHAR(255), BookID NVARCHAR(255), BookQuantity int) END"
         @@client.execute(query).do
     end
 end
